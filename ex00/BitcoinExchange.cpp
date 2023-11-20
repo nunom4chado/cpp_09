@@ -56,8 +56,11 @@ void BitcoinExchange::parseFile(const std::string file, const char separator) {
     std::string line;
     int count = 0;
 
-    // skip first line
+    // validate row header
     std::getline(ifs, line);
+    if ((separator == ',' && line != "date,exchange_rate") ||
+        (separator == '|' && line != "date | value"))
+        throw std::string("invalid row header.");
 
     while (std::getline(ifs, line)) {
         count++;
