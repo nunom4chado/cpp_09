@@ -58,7 +58,6 @@ void runTests(BitcoinExchange &btc) {
     const char databaseFile = ',';
     const char inputFile = '|';
 
-    const float MIN = static_cast<float>(std::numeric_limits<float>::lowest());
     const float MAX = static_cast<float>(std::numeric_limits<float>::max());
 
     std::cout << "For data.csv file" << std::endl;
@@ -68,7 +67,7 @@ void runTests(BitcoinExchange &btc) {
     btc.testValue(42.42, databaseFile);
     btc.testValue(1000, databaseFile);
     btc.testValue(1001, databaseFile);
-    btc.testValue(MIN, databaseFile);
+    btc.testValue(-MAX, databaseFile);
     btc.testValue(MAX, databaseFile);
     std::cout << "\n"
               << "For input file" << std::endl;
@@ -78,6 +77,6 @@ void runTests(BitcoinExchange &btc) {
     btc.testValue(42.42, inputFile);
     btc.testValue(1000, inputFile);
     btc.testValue(1001, inputFile);
-    btc.testValue(MIN, inputFile);
+    btc.testValue(-MAX, inputFile);
     btc.testValue(MAX, inputFile);
 }
