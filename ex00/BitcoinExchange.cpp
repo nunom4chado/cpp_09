@@ -71,6 +71,7 @@ void BitcoinExchange::parseFile(const std::string file, const char separator) {
 
         if (std::getline(ss, date, separator) && std::getline(ss, value)) {
             if (separator == '|') {
+                // TODO check if can segfault
                 date.erase(date.length() - 1, 1); // remove space at end
                 value.erase(0, 1);                // remove space at begining
             }
