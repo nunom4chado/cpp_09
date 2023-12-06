@@ -19,7 +19,7 @@ static bool is_digits(const std::string &str) {
 /*                                    Class                                   */
 /* -------------------------------------------------------------------------- */
 
-BitcoinExchange::BitcoinExchange() { parseFile("data.csv", ','); }
+BitcoinExchange::BitcoinExchange() { parseCsvFile(); }
 
 BitcoinExchange::~BitcoinExchange() {}
 
@@ -47,8 +47,35 @@ void BitcoinExchange::printLine(const std::string &key, const float value) {
     std::cout << it->first << " => " << value << " = " << value * it->second
               << std::endl;
 }
+void BitcoinExchange::parseCsvFile() {
+    std::ifstream ifs("data.csv");
+    if (!ifs.good())
+        throw std::string("could not open data.csv file, make sure to add it "
+                          "to the project directory.");
 
-void BitcoinExchange::parseFile(const std::string file, const char separator) {
+    std::string line;
+
+    // validate row header
+    std::getline(ifs, line);
+    if (line != "date,exchange_rate")
+        throw std::string("data.csv row header is invalid. Check if you have "
+                          "the correct file.");
+
+    while (std::getline(ifs, line)) {
+        std::istringstream ss(line);
+        std::string date, value;
+        float btcValue;
+
+        if (std::getline(ss, date, ',') && std::getline(ss, value)) {
+            btcValue = ft_stof(value);
+            this->_data.insert(std::pair<std::string, float>(date, btcValue));
+        }
+    }
+
+    ifs.close();
+}
+
+void BitcoinExchange::parseFile(const std::string file) {
     std::ifstream ifs(file.c_str());
     if (!ifs.good())
         throw std::string("could not open file.");
@@ -58,9 +85,8 @@ void BitcoinExchange::parseFile(const std::string file, const char separator) {
 
     // validate row header
     std::getline(ifs, line);
-    if ((separator == ',' && line != "date,exchange_rate") ||
-        (separator == '|' && line != "date | value"))
-        throw std::string("invalid row header.");
+    if (line != "date | value")
+        throw std::string("input file has invalid row header.");
 
     while (std::getline(ifs, line)) {
         count++;
@@ -69,23 +95,31 @@ void BitcoinExchange::parseFile(const std::string file, const char separator) {
         std::string date, value;
         float btcValue;
 
-        if (std::getline(ss, date, separator) && std::getline(ss, value)) {
-            if (separator == '|') {
-                // TODO check if can segfault
+        if (std::getline(ss, date, '|') && std::getline(ss, value)) {
+
+            // TODO check if can segfault
+            if (date.length() && date[date.length() - 1] == ' ' &&
+                value.length() && value[0] == ' ') {
+
                 date.erase(date.length() - 1, 1); // remove space at end
                 value.erase(0, 1);                // remove space at begining
+            } else {
+                std::cerr << "Error: bad input => " << line << std::endl;
+                continue;
             }
+
             btcValue = ft_stof(value);
 
-            if (!isValidDate(date) || !isValidValue(btcValue, separator, true))
+            if (!isValidDate(date)) {
+                std::cerr << "Error: bad input => " << line << std::endl;
                 continue;
-
-            if (separator == ',') {
-                this->_data.insert(
-                    std::pair<std::string, float>(date, btcValue));
-            } else {
-                printLine(date, btcValue);
             }
+
+            if (!isValidValue(btcValue)) {
+                continue;
+            }
+
+            printLine(date, btcValue);
 
         } else
             std::cerr << "Error: bad input => " << line << std::endl;
@@ -100,15 +134,12 @@ void BitcoinExchange::parseFile(const std::string file, const char separator) {
 /* -------------------------------------------------------------------------- */
 /*                              Value Validation                              */
 /* -------------------------------------------------------------------------- */
-bool BitcoinExchange::isValidValue(const float value, const char separator,
-                                   bool printError) {
-    if (value > 1000 && separator == '|') {
-        if (printError)
-            std::cerr << "Error: too large a number." << std::endl;
+bool BitcoinExchange::isValidValue(const float value) {
+    if (value > 1000) {
+        std::cerr << "Error: too large a number." << std::endl;
         return false;
     } else if (value < 0) {
-        if (printError)
-            std::cerr << "Error: not a positive number." << std::endl;
+        std::cerr << "Error: not a positive number." << std::endl;
         return false;
     }
     return true;
@@ -181,10 +212,10 @@ void BitcoinExchange::testDate(const std::string &date) {
         std::cout << "invalid" << std::endl;
 }
 
-void BitcoinExchange::testValue(const float value, const char separator) {
+void BitcoinExchange::testValue(const float value) {
     std::cout << "Value: " << std::setw(14) << std::setfill('_') << std::left
               << value << " is ";
-    if (isValidValue(value, separator, false))
+    if (isValidValue(value))
         std::cout << "valid" << std::endl;
     else
         std::cout << "invalid" << std::endl;
@@ -194,7 +225,6 @@ void BitcoinExchange::printData() {
     std::map<std::string, float>::iterator it = this->_data.begin();
 
     while (it != this->_data.end()) {
-
         std::cout << it->first << " : " << it->second << std::endl;
         it++;
     }

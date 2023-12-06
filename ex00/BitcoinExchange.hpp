@@ -19,14 +19,15 @@ class BitcoinExchange {
     BitcoinExchange(const BitcoinExchange &src);
     BitcoinExchange &operator=(const BitcoinExchange &rhs);
 
-    void parseFile(const std::string file, const char separator);
-    bool isValidValue(const float value, const char separator, bool printError);
+    void parseCsvFile();
+    void parseFile(const std::string file);
+    bool isValidValue(const float value);
     bool isValidDate(const std::string &date);
     void printLine(const std::string &key, const float value);
 
-    void testDate(const std::string &date);                  // testing only
-    void testValue(const float value, const char separator); // testing only
-    void printData();                                        // testing only
+    void testDate(const std::string &date); // testing only
+    void testValue(const float value);      // testing only
+    void printData();                       // testing only
 };
 
 #endif /* BITCOINEXCHANGE_HPP */

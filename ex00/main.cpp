@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
     try {
         BitcoinExchange btc;
         // runTests(btc);
-        btc.parseFile(argv[1], '|');
+        btc.parseFile(argv[1]);
     } catch (std::string error) {
         std::cerr << "Error: " << error << std::endl;
         return 1;
@@ -55,28 +55,26 @@ void runTests(BitcoinExchange &btc) {
     // btc.printData();
 
     std::cout << "Test Values" << std::endl;
-    const char databaseFile = ',';
-    const char inputFile = '|';
 
     const float MAX = static_cast<float>(std::numeric_limits<float>::max());
 
     std::cout << "For data.csv file" << std::endl;
-    btc.testValue(0, databaseFile);
-    btc.testValue(-1, databaseFile);
-    btc.testValue(1, databaseFile);
-    btc.testValue(42.42, databaseFile);
-    btc.testValue(1000, databaseFile);
-    btc.testValue(1001, databaseFile);
-    btc.testValue(-MAX, databaseFile);
-    btc.testValue(MAX, databaseFile);
+    btc.testValue(0);
+    btc.testValue(-1);
+    btc.testValue(1);
+    btc.testValue(42.42);
+    btc.testValue(1000);
+    btc.testValue(1001);
+    btc.testValue(-MAX);
+    btc.testValue(MAX);
     std::cout << "\n"
               << "For input file" << std::endl;
-    btc.testValue(0, inputFile);
-    btc.testValue(-1, inputFile);
-    btc.testValue(1, inputFile);
-    btc.testValue(42.42, inputFile);
-    btc.testValue(1000, inputFile);
-    btc.testValue(1001, inputFile);
-    btc.testValue(-MAX, inputFile);
-    btc.testValue(MAX, inputFile);
+    btc.testValue(0);
+    btc.testValue(-1);
+    btc.testValue(1);
+    btc.testValue(42.42);
+    btc.testValue(1000);
+    btc.testValue(1001);
+    btc.testValue(-MAX);
+    btc.testValue(MAX);
 }
