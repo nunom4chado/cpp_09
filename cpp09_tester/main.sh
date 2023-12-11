@@ -37,6 +37,10 @@ for dir in "${directories[@]}"; do
 done
 printf "\n\n";
 
+# ---------------------------------------------------------------------------- #
+#                                   TEST EX00                                  #
+# ---------------------------------------------------------------------------- #
+
 printf "\n------ EX00 TESTS ------\n";
 cd ../ex00 &> /dev/null
 
@@ -62,7 +66,7 @@ DIFF=$(diff out_noargs ../cpp09_tester/ex00/exp_noargs)
 if [ "$DIFF" == "" ]; then
     printf "${GREEN}[OK]${DEF_COLOR}"
 else
-    printf "${RED}[KO]${DEF_COLOR}";
+    printf "${RED}[KO]${DEF_COLOR}\n ${DIFF}\n";
 fi
 printf "\n";
 
@@ -73,7 +77,7 @@ DIFF=$(diff out_subject ../cpp09_tester/ex00/exp_subject)
 if [ "$DIFF" == "" ]; then
     printf "${GREEN}[OK]${DEF_COLOR}"
 else
-    printf "${RED}[KO]${DEF_COLOR}";
+    printf "${RED}[KO]${DEF_COLOR}\n ${DIFF}\n";
 fi
 printf "\n";
 
@@ -83,7 +87,7 @@ DIFF=$(diff out_hard ../cpp09_tester/ex00/exp_hard)
 if [ "$DIFF" == "" ]; then
     printf "${GREEN}[OK]${DEF_COLOR}"
 else
-    printf "${RED}[KO]${DEF_COLOR}";
+    printf "${RED}[KO]${DEF_COLOR}\n ${DIFF}\n";
 fi
 printf "\n";
 
