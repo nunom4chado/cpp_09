@@ -23,12 +23,11 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
         A.pop_back();
     }
 
-    (void)stray; // TODO remove this
-
     /* ----------------------- Step 1: Pairwise comparison ---------------------- */
 
     std::vector<std::pair<int, int> > pairs;
     std::vector<int>::iterator it;
+    std::vector<int>::iterator s_it;
     std::vector<std::pair<int, int> >::iterator pair_it;
 
     // Create pairs
@@ -58,12 +57,76 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
 
     print_container(main_branch, "inserting...");
 
+    // insert stray into into the pairs now, the pair value will be 0 because wont need it
+    // its easier to calculate and insert it at the right time
+    pairs.push_back(std::pair<int, int>(0, stray));
+
+    std::vector<int> insert_sequence = create_insert_sequence(pairs);
+
+    print_container(insert_sequence, "insert sequence");
+
+    for (it = insert_sequence.begin(); it != insert_sequence.end(); it++) {
+        std::cout << "b" << *it << " is " << pairs[*it - 1].second << std::endl;
+
+        s_it = main_branch.begin();
+
+        while (*s_it < pairs[*it - 1].second)
+            s_it++;
+
+        main_branch.insert(s_it, pairs[*it - 1].second);
+    }
+
+    print_container(main_branch, "main branch");
+
     return A;
 }
 
 /* -------------------------------------------------------------------------- */
 /*                                  Utilities                                 */
 /* -------------------------------------------------------------------------- */
+
+std::vector<int> create_insert_sequence(std::vector<std::pair<int, int> > &pairs) {
+    std::vector<int> insert_sequence;
+
+    int jacobsthal[] = {
+        1,     3,      5,       11,        43,        683, 2731,
+        43691, 174763, 2796203, 715827883, 2147483647}; // last number was lowered down to INT_MAX
+
+    int max_b_index = pairs.size();
+    int max_index_needed = 0;
+
+    while (max_b_index > jacobsthal[max_index_needed])
+        max_index_needed++;
+
+    // for (int i = 0; i < jacobsthal_size; i++) {
+    //     max_needed_pos = jacobsthal[i];
+
+    //     if (max_b_index < jacobsthal[i])
+    //         break;
+    // }
+
+    std::cout << "number of pairs " << pairs.size() << std::endl;
+    std::cout << "max index is " << max_index_needed << std::endl;
+    std::cout << "because highest b index is " << max_b_index << " and it's bellow or equal to "
+              << jacobsthal[max_index_needed] << std::endl;
+
+    if (max_index_needed == 0)
+        return insert_sequence;
+
+    for (int i = 0; i < max_index_needed; i++) {
+        int cur = jacobsthal[i + 1];
+
+        if (max_b_index < cur)
+            cur = max_b_index;
+
+        while (cur > jacobsthal[i]) {
+            insert_sequence.push_back(cur);
+            cur--;
+        }
+    }
+
+    return insert_sequence;
+}
 
 std::vector<int> create_main_branch(std::vector<std::pair<int, int> > &pairs, bool has_stray,
                                     int stray) {

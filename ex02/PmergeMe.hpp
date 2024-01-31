@@ -22,5 +22,6 @@ void recursive_sort_pair(std::vector<std::pair<int, int> > &pairs, int n);
 std::vector<int> create_main_branch(std::vector<std::pair<int, int> > &pairs, bool has_stray,
                                     int stray);
 void print_container(std::vector<int> list, const std::string &msg);
+std::vector<int> create_insert_sequence(std::vector<std::pair<int, int> > &pairs);
 
 #endif /* PMERGEME_HPP */
