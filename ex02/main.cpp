@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
     }
 
     std::vector<int> first;
+    std::deque<int> second;
 
     // checks if arguments are only numbers
     // insert them into the containers
@@ -25,6 +26,7 @@ int main(int argc, char **argv) {
             return 1;
         }
         first.push_back(static_cast<int>(nb));
+        second.push_back(static_cast<int>(nb));
     }
 
     /* ------------------------------ Print before ------------------------------ */
@@ -37,12 +39,18 @@ int main(int argc, char **argv) {
     /* --------------------------------- Sorting -------------------------------- */
 
     struct timeval vector_timer_begin, vector_timer_end;
-
     start_timer(&vector_timer_begin);
 
     first = PmergeMe::merge_insertion_sort(first);
 
     double vector_time = stop_timer(&vector_timer_begin, &vector_timer_end);
+
+    struct timeval deque_timer_begin, deque_timer_end;
+    start_timer(&deque_timer_begin);
+
+    second = PmergeMe::merge_insertion_sort(second);
+
+    double deque_time = stop_timer(&deque_timer_begin, &deque_timer_end);
 
     /* ------------------------------- Print after ------------------------------ */
     std::cout << "After:  ";
@@ -54,10 +62,12 @@ int main(int argc, char **argv) {
     /* ----------------------------- Display timers ----------------------------- */
 
     std::cout.setf(std::ios::fixed, std::ios::floatfield);
-    std::cout.precision(5);
+    std::cout.precision(8);
 
     std::cout << "Time to process a range of " << argc - 1
-              << " elements with std::vector : " << vector_time << " us" << std::endl;
+              << " elements with std::vector : " << vector_time << " s" << std::endl;
+    std::cout << "Time to process a range of " << argc - 1
+              << " elements with std::deque : " << deque_time << " s" << std::endl;
 
     return 0;
 }
