@@ -59,7 +59,8 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
 
     // insert stray into into the pairs now, the pair value will be 0 because wont need it
     // its easier to calculate and insert it at the right time
-    pairs.push_back(std::pair<int, int>(0, stray));
+    if (has_stray)
+        pairs.push_back(std::pair<int, int>(0, stray));
 
     std::vector<int> insert_sequence = create_insert_sequence(pairs);
 

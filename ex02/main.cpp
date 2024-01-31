@@ -5,12 +5,10 @@
 #include <vector>
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
+    if (argc < 3) {
         std::cout << "Error" << std::endl;
         return 1;
     }
-
-    // TODO handle 1 number only
 
     std::vector<int> first;
 
