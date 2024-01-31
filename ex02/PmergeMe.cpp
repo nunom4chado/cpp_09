@@ -35,7 +35,7 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
         pairs.push_back(std::pair<int, int>(*it, *(it + 1)));
     }
 
-    print_pairs(pairs, "Create pairs");
+    // print_pairs(pairs, "Create pairs");
 
     // Sort each pair
     for (pair_it = pairs.begin(); pair_it != pairs.end(); pair_it++) {
@@ -44,18 +44,18 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
         }
     }
 
-    print_pairs(pairs, "After sort pairs");
+    // print_pairs(pairs, "After sort pairs");
 
     /* ---------------------------- Step 2: Recursion --------------------------- */
 
     recursive_sort_pair(pairs, pairs.size() - 1);
-    print_pairs(pairs, "After recursive sort");
+    // print_pairs(pairs, "After recursive sort");
 
     /* ---------------------------- Step 3: Insertion --------------------------- */
 
-    std::vector<int> main_branch = create_main_branch(pairs, has_stray, stray);
+    std::vector<int> main_branch = create_main_branch(pairs);
 
-    print_container(main_branch, "inserting...");
+    // print_container(main_branch, "inserting...");
 
     // insert stray into into the pairs now, the pair value will be 0 because wont need it
     // its easier to calculate and insert it at the right time
@@ -63,10 +63,10 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
 
     std::vector<int> insert_sequence = create_insert_sequence(pairs);
 
-    print_container(insert_sequence, "insert sequence");
+    // print_container(insert_sequence, "insert sequence");
 
     for (it = insert_sequence.begin(); it != insert_sequence.end(); it++) {
-        std::cout << "b" << *it << " is " << pairs[*it - 1].second << std::endl;
+        // std::cout << "b" << *it << " is " << pairs[*it - 1].second << std::endl;
 
         s_it = main_branch.begin();
 
@@ -76,9 +76,14 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
         main_branch.insert(s_it, pairs[*it - 1].second);
     }
 
-    print_container(main_branch, "main branch");
+    // print_container(main_branch, "main branch");
 
-    return A;
+    // if (is_sorted(main_branch))
+    //     std::cout << "sorted" << std::endl;
+    // else
+    //     std::cout << "NOT SORTED" << std::endl;
+
+    return main_branch;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -98,17 +103,10 @@ std::vector<int> create_insert_sequence(std::vector<std::pair<int, int> > &pairs
     while (max_b_index > jacobsthal[max_index_needed])
         max_index_needed++;
 
-    // for (int i = 0; i < jacobsthal_size; i++) {
-    //     max_needed_pos = jacobsthal[i];
-
-    //     if (max_b_index < jacobsthal[i])
-    //         break;
-    // }
-
-    std::cout << "number of pairs " << pairs.size() << std::endl;
-    std::cout << "max index is " << max_index_needed << std::endl;
-    std::cout << "because highest b index is " << max_b_index << " and it's bellow or equal to "
-              << jacobsthal[max_index_needed] << std::endl;
+    // std::cout << "number of pairs " << pairs.size() << std::endl;
+    // std::cout << "max index is " << max_index_needed << std::endl;
+    // std::cout << "because highest b index is " << max_b_index << " and it's bellow or equal to "
+    //           << jacobsthal[max_index_needed] << std::endl;
 
     if (max_index_needed == 0)
         return insert_sequence;
@@ -128,13 +126,9 @@ std::vector<int> create_insert_sequence(std::vector<std::pair<int, int> > &pairs
     return insert_sequence;
 }
 
-std::vector<int> create_main_branch(std::vector<std::pair<int, int> > &pairs, bool has_stray,
-                                    int stray) {
+std::vector<int> create_main_branch(std::vector<std::pair<int, int> > &pairs) {
     std::vector<int> main_branch;
     std::vector<std::pair<int, int> >::iterator pairs_it;
-
-    (void)has_stray;
-    (void)stray;
 
     for (pairs_it = pairs.begin(); pairs_it != pairs.end(); pairs_it++) {
         if (pairs_it == pairs.begin()) {
@@ -177,6 +171,18 @@ void recursive_sort_pair(std::vector<std::pair<int, int> > &pairs, int n) {
     insert(element, pairs, n - 1);
 }
 
+void start_timer(struct timeval *begin) { gettimeofday(begin, 0); }
+
+double stop_timer(struct timeval *begin, struct timeval *end) {
+    // Stop measuring time and calculate the elapsed time
+    gettimeofday(end, 0);
+    long seconds = end->tv_sec - begin->tv_sec;
+    long microseconds = end->tv_usec - begin->tv_usec;
+    double elapsed = seconds + microseconds * 1e-6;
+
+    return elapsed;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                   Extras                                   */
 /* -------------------------------------------------------------------------- */
@@ -201,4 +207,17 @@ void print_container(std::vector<int> list, const std::string &msg) {
     }
 
     std::cout << std::endl;
+}
+
+bool is_sorted(std::vector<int> a) {
+    std::vector<int>::iterator it;
+
+    for (it = a.begin(); it != a.end(); it++) {
+        if (it == a.begin())
+            continue;
+        if (*it < *(it - 1))
+            return false;
+    }
+
+    return true;
 }

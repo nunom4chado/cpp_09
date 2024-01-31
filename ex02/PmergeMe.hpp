@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
+#include <sys/time.h>
+#include <time.h>
 #include <utility>
 #include <vector>
 
@@ -19,9 +21,12 @@ class PmergeMe {
 
 void print_pairs(std::vector<std::pair<int, int> > pairs, const std::string &msg);
 void recursive_sort_pair(std::vector<std::pair<int, int> > &pairs, int n);
-std::vector<int> create_main_branch(std::vector<std::pair<int, int> > &pairs, bool has_stray,
-                                    int stray);
+std::vector<int> create_main_branch(std::vector<std::pair<int, int> > &pairs);
 void print_container(std::vector<int> list, const std::string &msg);
 std::vector<int> create_insert_sequence(std::vector<std::pair<int, int> > &pairs);
+bool is_sorted(std::vector<int> a);
+
+void start_timer(struct timeval *begin);
+double stop_timer(struct timeval *begin, struct timeval *end);
 
 #endif /* PMERGEME_HPP */
