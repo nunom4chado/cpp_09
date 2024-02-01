@@ -176,7 +176,7 @@ void recursive_sort_pair(std::vector<std::pair<int, int> > &pairs, int n) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                    List                                    */
+/*                                   Deque                                    */
 /* -------------------------------------------------------------------------- */
 
 std::deque<int> PmergeMe::merge_insertion_sort(std::deque<int> A) {
