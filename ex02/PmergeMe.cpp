@@ -64,7 +64,7 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
 
     // print_container(main_branch, "inserting...");
 
-    // insert stray into into the pairs now, the pair value will be 0 because wont need it
+    // insert stray into the pairs now, the pair value will be 0 because wont need it
     // its easier to calculate and insert it at the right time
     if (has_stray)
         pairs.push_back(std::pair<int, int>(0, stray));
@@ -85,11 +85,6 @@ std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
     }
 
     // print_container(main_branch, "main branch");
-
-    // if (is_sorted(main_branch))
-    //     std::cout << "sorted" << std::endl;
-    // else
-    //     std::cout << "NOT SORTED" << std::endl;
 
     return main_branch;
 }
@@ -228,7 +223,7 @@ std::deque<int> PmergeMe::merge_insertion_sort(std::deque<int> A) {
 
     // print_container(main_branch, "inserting...");
 
-    // insert stray into into the pairs now, the pair value will be 0 because wont need it
+    // insert stray into the pairs now, the pair value will be 0 because wont need it
     // its easier to calculate and insert it at the right time
     if (has_stray)
         pairs.push_back(std::pair<int, int>(0, stray));
@@ -249,11 +244,6 @@ std::deque<int> PmergeMe::merge_insertion_sort(std::deque<int> A) {
     }
 
     // print_container(main_branch, "main branch");
-
-    // if (is_sorted(main_branch))
-    //     std::cout << "sorted" << std::endl;
-    // else
-    //     std::cout << "NOT SORTED" << std::endl;
 
     return main_branch;
 }
