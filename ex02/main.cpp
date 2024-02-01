@@ -5,7 +5,7 @@
 #include <vector>
 
 int main(int argc, char **argv) {
-    if (argc < 3) {
+    if (argc < 2) {
         std::cout << "Error" << std::endl;
         return 1;
     }
@@ -68,6 +68,9 @@ int main(int argc, char **argv) {
               << " elements with std::vector : " << vector_time << " s" << std::endl;
     std::cout << "Time to process a range of " << argc - 1
               << " elements with std::deque : " << deque_time << " s" << std::endl;
+
+    // std::cout << "is vector sorted? " << is_sorted(first) << std::endl;
+    // std::cout << "is deque sorted? " << is_sorted(second) << std::endl;
 
     return 0;
 }

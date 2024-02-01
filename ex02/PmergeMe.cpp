@@ -16,6 +16,9 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &rhs) {
 /* -------------------------------------------------------------------------- */
 
 std::vector<int> PmergeMe::merge_insertion_sort(std::vector<int> A) {
+    if (A.size() < 2)
+        return A;
+
     int stray = 0;
 
     // Check if list has odd elements
@@ -177,6 +180,9 @@ void recursive_sort_pair(std::vector<std::pair<int, int> > &pairs, int n) {
 /* -------------------------------------------------------------------------- */
 
 std::deque<int> PmergeMe::merge_insertion_sort(std::deque<int> A) {
+    if (A.size() < 2)
+        return A;
+
     int stray = 0;
 
     // Check if list has odd elements
@@ -372,6 +378,19 @@ void print_container(std::vector<int> list, const std::string &msg) {
 
 bool is_sorted(std::vector<int> a) {
     std::vector<int>::iterator it;
+
+    for (it = a.begin(); it != a.end(); it++) {
+        if (it == a.begin())
+            continue;
+        if (*it < *(it - 1))
+            return false;
+    }
+
+    return true;
+}
+
+bool is_sorted(std::deque<int> a) {
+    std::deque<int>::iterator it;
 
     for (it = a.begin(); it != a.end(); it++) {
         if (it == a.begin())
