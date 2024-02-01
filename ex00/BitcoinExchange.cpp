@@ -23,8 +23,7 @@ BitcoinExchange::BitcoinExchange() { parseCsvFile(); }
 
 BitcoinExchange::~BitcoinExchange() {}
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &src)
-    : _data(src._data) {}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) : _data(src._data) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &rhs) {
     if (this == &rhs)
@@ -44,8 +43,7 @@ void BitcoinExchange::printLine(const std::string &key, const float value) {
     if (it != this->_data.begin() && it->first != key)
         it--;
 
-    std::cout << it->first << " => " << value << " = " << value * it->second
-              << std::endl;
+    std::cout << it->first << " => " << value << " = " << value * it->second << std::endl;
 }
 void BitcoinExchange::parseCsvFile() {
     std::ifstream ifs("data.csv");
@@ -97,9 +95,9 @@ void BitcoinExchange::parseFile(const std::string file) {
 
         if (std::getline(ss, date, '|') && std::getline(ss, value)) {
 
-            // TODO check if can segfault
-            if (date.length() && date[date.length() - 1] == ' ' &&
-                value.length() && value[0] == ' ') {
+            // force to have spaces between the | eg "2023-10-10 | 1"
+            if (date.length() && date[date.length() - 1] == ' ' && value.length() &&
+                value[0] == ' ') {
 
                 date.erase(date.length() - 1, 1); // remove space at end
                 value.erase(0, 1);                // remove space at begining
@@ -116,6 +114,8 @@ void BitcoinExchange::parseFile(const std::string file) {
             }
 
             if (!isValidValue(btcValue)) {
+                // a custom error msg was already printed in the cout
+                // continue to prevent reaching printLine
                 continue;
             }
 
@@ -204,8 +204,7 @@ bool BitcoinExchange::isValidDate(const std::string &date) {
 /*                                   Testing                                  */
 /* -------------------------------------------------------------------------- */
 void BitcoinExchange::testDate(const std::string &date) {
-    std::cout << "Date: " << std::setw(14) << std::setfill('_') << std::left
-              << date << " is ";
+    std::cout << "Date: " << std::setw(14) << std::setfill('_') << std::left << date << " is ";
     if (isValidDate(date))
         std::cout << "valid" << std::endl;
     else
@@ -213,8 +212,7 @@ void BitcoinExchange::testDate(const std::string &date) {
 }
 
 void BitcoinExchange::testValue(const float value) {
-    std::cout << "Value: " << std::setw(14) << std::setfill('_') << std::left
-              << value << " is ";
+    std::cout << "Value: " << std::setw(14) << std::setfill('_') << std::left << value << " is ";
     if (isValidValue(value))
         std::cout << "valid" << std::endl;
     else
