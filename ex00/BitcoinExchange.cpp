@@ -43,7 +43,7 @@ void BitcoinExchange::printLine(const std::string &key, const float value) {
     if (it != this->_data.begin() && it->first != key)
         it--;
 
-    std::cout << it->first << " => " << value << " = " << value * it->second << std::endl;
+    std::cout << key << " => " << value << " = " << value * it->second << std::endl;
 }
 void BitcoinExchange::parseCsvFile() {
     std::ifstream ifs("data.csv");
