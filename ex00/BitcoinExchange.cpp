@@ -84,7 +84,7 @@ void BitcoinExchange::parseFile(const std::string file) {
     // validate row header
     std::getline(ifs, line);
     if (line != "date | value")
-        throw std::string("input file has invalid row header.");
+        std::cerr << "Error: input file has invalid row header." << std::endl;
 
     while (std::getline(ifs, line)) {
         count++;
@@ -126,9 +126,6 @@ void BitcoinExchange::parseFile(const std::string file) {
     }
 
     ifs.close();
-
-    if (!count)
-        throw std::string("empty file.");
 }
 
 /* -------------------------------------------------------------------------- */
